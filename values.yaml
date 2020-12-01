@@ -5,7 +5,7 @@ image:
 
 imagePullSecrets: []
 nameOverride: ""
-fullnameOverride: "thanos-monitoring-operator"
+fullnameOverride: "erynis-monitoring-operator"
 
 podAnnotations: {}
 
