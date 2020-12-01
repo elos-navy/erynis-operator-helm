@@ -1,3 +1,3 @@
 # Erynis Monitoring Stack
 
-Copyright (c) ELOS Technologies
+Copyright (c) 2020 ELOS Technologies
