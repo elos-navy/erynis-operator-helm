@@ -11,6 +11,8 @@ demoCrs:
   create: false
   appDomain: apps.example.com
 
+projectName: erynis-monitoring
+
 podAnnotations: {}
 
 podSecurityContext: {}

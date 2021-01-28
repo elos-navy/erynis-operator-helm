@@ -1,4 +1,4 @@
-{{- if eq .Values.demoCrs.create "true" }}
+{{- if eq .Values.demoCrs.create true }}
 apiVersion: monitoring.elostech.cz/v1alpha1
 kind: Grafana
 metadata:
@@ -60,7 +60,7 @@ spec:
         - name: Thanos
           type: prometheus
           access: proxy
-          url: http://demo-thanos-querier-frontend.thanos-monitoring.svc.cluster.local:9090
+          url: http://demo-thanos-querier-frontend.{{ .Values.projectName }}.svc.cluster.local:9090
           editable: false
 
   openshiftRoute:

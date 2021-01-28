@@ -1,4 +1,4 @@
-{{- if eq .Values.demoCrs.create "true" }}
+{{- if eq .Values.demoCrs.create true }}
 apiVersion: monitoring.elostech.cz/v1alpha1
 kind: Pushgateway
 metadata:

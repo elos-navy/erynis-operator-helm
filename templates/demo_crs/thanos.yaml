@@ -1,4 +1,4 @@
-{{- if eq .Values.demoCrs.create "true" }}
+{{- if eq .Values.demoCrs.create true }}
 apiVersion: monitoring.elostech.cz/v1alpha1
 kind: Thanos
 metadata:
@@ -9,7 +9,7 @@ spec:
     type: s3
     config:
       bucket: thanos
-      endpoint: demo-thanos-minio.thanos-monitoring.svc.cluster.local:9000
+      endpoint: demo-thanos-minio.{{ .Values.projectName }}.svc.cluster.local:9000
       access_key: minio
       secret_key: gu8Shu6W
       insecure: true
@@ -22,7 +22,7 @@ spec:
     logLevel: debug
     replicaLabel: prometheus_replica
     stores:
-      - dnssrv+_grpc._tcp.demo-thanos-receive.thanos-monitoring.svc.cluster.local
+      - dnssrv+_grpc._tcp.demo-thanos-receive.{{ .Values.projectName }}.svc.cluster.local
       # Defaultne nastavene uz ako --store parameter v definicii podu - deploymentu.
       #- dnssrv+_grpc._tcp.lstanek-thanos-storegateway.lstanek-monitoring.svc.cluster.local
     openshiftRoute:

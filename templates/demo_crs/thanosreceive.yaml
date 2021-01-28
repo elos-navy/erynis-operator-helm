@@ -1,4 +1,4 @@
-{{- if eq .Values.demoCrs.create "true" }}
+{{- if eq .Values.demoCrs.create true }}
 apiVersion: monitoring.elostech.cz/v1alpha1
 kind: ThanosReceive
 metadata:
@@ -16,7 +16,7 @@ spec:
     host: thanos-receive.{{ .Values.demoCrs.appDomain }}
   resources:
     requests:
-      memory: 5Gi
+      memory: 1Gi
     limits:
       memory: 20Gi
 {{- end }}
