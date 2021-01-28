@@ -1,11 +1,15 @@
 image:
   repository: quay.io/elostech/erynis-monitoring-operator
   pullPolicy: IfNotPresent
-  tag: "v0.1.4"
+  tag: "0.2.20"
 
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: "erynis-monitoring-operator"
+
+demoCrs:
+  create: false
+  appDomain: apps.example.com
 
 podAnnotations: {}
 

@@ -1,0 +1,109 @@
+{{- if eq .Values.demoCrs.create "true" }}
+apiVersion: monitoring.elostech.cz/v1alpha1
+kind: Thanos
+metadata:
+  finalizers: []
+  name: demo-thanos
+spec:
+  objstoreConfig: |-
+    type: s3
+    config:
+      bucket: thanos
+      endpoint: demo-thanos-minio.thanos-monitoring.svc.cluster.local:9000
+      access_key: minio
+      secret_key: gu8Shu6W
+      insecure: true
+  #image:
+  #  tag: v0.14.0
+  #  registry: quay.io
+  #  repository: thanos/thanos
+  querier:
+    enabled: true
+    logLevel: debug
+    replicaLabel: prometheus_replica
+    stores:
+      - dnssrv+_grpc._tcp.demo-thanos-receive.thanos-monitoring.svc.cluster.local
+      # Defaultne nastavene uz ako --store parameter v definicii podu - deploymentu.
+      #- dnssrv+_grpc._tcp.lstanek-thanos-storegateway.lstanek-monitoring.svc.cluster.local
+    openshiftRoute:
+      enabled: true
+      host: thanos-querier.{{ .Values.demoCrs.appDomain }}
+    grpcTLS:
+      client:
+        secure: false
+        #servername: prometheus-grpc
+        #cert: |-
+        #key: |-
+        #ca: |-
+
+  querierfrontend:
+    enabled: true
+    logLevel: debug
+    openshiftRoute:
+      enabled: true
+      host: thanos-querier-frontend.{{ .Values.demoCrs.appDomain }}
+
+  bucketweb:
+    enabled: true
+    openshiftRoute:
+      enabled: true
+      host: thanos-bucketweb.{{ .Values.demoCrs.appDomain }}
+  compactor:
+    enabled: true
+    persistence:
+      enabled: false
+      # existingClaim
+      # storageClass
+      # accessModes
+      # size
+  storegateway:
+    enabled: true
+    persistence:
+      enabled: false
+      # existingClaim
+      # storageClass
+      # accessModes
+      # size
+  ruler:
+    enabled: true
+    persistence:
+      enabled: false
+      # existingClaim
+      # storageClass
+      # accessModes
+      # size
+    alertmanagers:
+      - http://alertmanager-operated.openshift-monitoring.svc.cluster.local:9093
+    config: |-
+      groups:
+        - name: "metamonitoring"
+          rules:
+            - alert: "PrometheusDown"
+              expr: absent(up{prometheus="openshift-monitoring/k8s",service="prometheus-k8s"})
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+  minio:
+    enabled: true
+    openshiftRoute:
+      enabled: true
+      host: thanos-minio.{{ .Values.demoCrs.appDomain }}
+    accessKey:
+      password: "minio"
+    secretKey:
+      password: "gu8Shu6W"
+    defaultBuckets: "thanos"
+    persistence:
+      enabled: false
+      size: 5Gi
+    image:
+      debug: true
+    extraEnv:
+    - name: BITNAMI_DEBUG
+      value: "false"
+    #readinessProbe:
+    #  enabled: false
+    #livenessProbe:
+    #  enabled: false
+{{- end }}

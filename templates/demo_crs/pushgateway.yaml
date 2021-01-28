@@ -1,0 +1,11 @@
+{{- if eq .Values.demoCrs.create "true" }}
+apiVersion: monitoring.elostech.cz/v1alpha1
+kind: Pushgateway
+metadata:
+  finalizers: []
+  name: demo-pushgateway
+spec:
+  openshiftRoute:
+    enabled: true
+    host: prometheus-pushgateway.{{ .Values.demoCrs.appDomain }}
+{{- end }}

@@ -1,0 +1,22 @@
+{{- if eq .Values.demoCrs.create "true" }}
+apiVersion: monitoring.elostech.cz/v1alpha1
+kind: ThanosReceive
+metadata:
+  finalizers: []
+  name: demo-thanos-receive
+spec:
+  objectStoreSecret:
+    name: "demo-thanos-objstore-secret"
+    key: "objstore.yml"
+  persistence:
+    enabled: false
+    size: 5Gi
+  openshiftRoute:
+    enabled: true
+    host: thanos-receive.{{ .Values.demoCrs.appDomain }}
+  resources:
+    requests:
+      memory: 5Gi
+    limits:
+      memory: 20Gi
+{{- end }}

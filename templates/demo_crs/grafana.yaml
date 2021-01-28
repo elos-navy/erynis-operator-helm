@@ -1,0 +1,89 @@
+{{- if eq .Values.demoCrs.create "true" }}
+apiVersion: monitoring.elostech.cz/v1alpha1
+kind: Grafana
+metadata:
+  finalizers: []
+  name: demo-grafana
+spec:
+  injector:
+    enabled: false
+    image:
+      registry: quay.io
+      repository: elostech/grafana-injector
+      tag: v0.61
+    apiEndpoints:
+      openshift:
+        url: ''
+        port: 6443
+      grafana:
+        url: http://localhost
+        port: 3000
+      git:
+        url: ''
+        protocol: https
+    credentials:
+      openshift:
+        user: ""
+        pass: ""
+      grafana:
+        user: admin
+        pass: ''
+      git:
+        user: ''
+        pass: ''
+    timing:
+     startDelay: 30
+     interval: 300
+    projects_labels_selector: monitoring.elostech.cz/create-grafana-folder=true
+
+  AzureADOauth:
+    enabled: false
+    clientId: ''
+    clientSecret: ''
+    tenantId: ''
+
+  admin:
+    user: admin
+    password: 'admin123'
+
+  securityContext:
+    enabled: false
+    fsGroup: 0
+
+  persistence:
+    enabled: false
+
+  datasources:
+    config: |
+      apiVersion: 1
+      datasources:
+        - name: Thanos
+          type: prometheus
+          access: proxy
+          url: http://demo-thanos-querier-frontend.thanos-monitoring.svc.cluster.local:9090
+          editable: false
+
+  openshiftRoute:
+    enabled: true
+    host: "grafana.{{ .Values.demoCrs.appDomain }}"
+
+  #tolerations:
+  #- key: infra
+  #  value: reserved
+  #  effect: NoSchedule
+  #- key: infra
+  #  value: reserved
+  #  effect: NoExecute
+
+  metrics:
+    enabled: true
+
+  #service:
+  #  annotations:
+  #    service.beta.openshift.io/serving-cert-secret-name: grafana-tls
+  #    service.beta.openshift.io/inject-cabundle: true
+  #livenessProbe:
+  #  enabled: false
+  #readinessProbe:
+  #  enabled: false
+{{- end }}
