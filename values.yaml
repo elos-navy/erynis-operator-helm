@@ -1,7 +1,7 @@
 image:
   repository: quay.io/elostech/erynis-monitoring-operator
   pullPolicy: IfNotPresent
-  tag: "0.2.33"
+  tag: "0.2.34"
 
 imagePullSecrets: []
 nameOverride: ""
