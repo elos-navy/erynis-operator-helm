@@ -1,5 +1,5 @@
 image:
-  repository: quay.io/elostech/erynis-monitoring-operator
+  repository: quay.io/elostech/erynis-operator
   pullPolicy: IfNotPresent
   tag: "0.2.34"
 
